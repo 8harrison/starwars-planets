@@ -2,18 +2,37 @@ import { useState, useEffect } from 'react';
 
 function Table() {
   const [planets, setPlanets] = useState([]);
+  const [pesquisa, setPesquisa] = useState();
+  const [backupPlanets, setBackupPlanets] = useState([]);
+
+  const handleChange = ({ target }) => {
+    setPesquisa(target.value);
+    console.log(target.value);
+    // console.log(pesquisa);
+    const filterPlanets = backupPlanets
+      .filter((planet) => planet.name.includes(target.value));
+    setPlanets(filterPlanets);
+    console.log(filterPlanets);
+  };
+
   useEffect(() => {
     const fetchPlanets = async () => {
       const url = 'https://swapi.dev/api/planets';
       const response = await fetch(url);
       const data = await response.json();
       setPlanets(data.results);
+      setBackupPlanets(data.results);
     };
     fetchPlanets();
-    console.log(planets);
-  }, [planets]);
+  }, [setPesquisa]);
   return (
     <div>
+      <input
+        type="text"
+        onChange={ handleChange }
+        value={ pesquisa }
+        data-testid="name-filter"
+      />
       <table>
         <tr>
           <th>climate</th>
