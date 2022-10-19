@@ -11,7 +11,7 @@ function Table() {
     };
     fetchPlanets();
     console.log(planets);
-  }, []);
+  }, [planets]);
   return (
     <div>
       <table>
