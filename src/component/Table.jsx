@@ -41,6 +41,8 @@ function Table() {
   const onClick = () => {
     if (columFilter === 'population') {
       maiorOuMenorOuIgual('population');
+      const x = document.getElementById('colum-filter');
+      x.remove(x[0]);
     } else if (columFilter === 'orbital_period') {
       maiorOuMenorOuIgual('orbital_period');
     } else if (columFilter === 'diameter') {
@@ -82,6 +84,7 @@ function Table() {
       />
       <select
         data-testid="column-filter"
+        id="colum-filter"
         onChange={ handleColumFilter }
         value={ columFilter }
       >
