@@ -20,17 +20,21 @@ function Table() {
 
   const maiorOuMenorOuIgual = (parametro) => {
     if (comparisonFilter === 'maior que') {
-      const filterPlanets = backupPlanets
-        .filter((planet) => Number(planet[parametro]) > Number(valueFilter));
+      const filterPlanets = planets.filter(
+        (planet) => Number(planet[parametro]) > Number(valueFilter),
+      );
       setPlanets(filterPlanets);
       console.log(parametro);
     } else if (comparisonFilter === 'menor que') {
-      const filterPlanets = backupPlanets
-        .filter((planet) => Number(planet[parametro]) < Number(valueFilter));
+      const filterPlanets = planets.filter(
+        (planet) => planet[parametro] !== 'unknow'
+        && Number(planet[parametro]) < Number(valueFilter),
+      );
       setPlanets(filterPlanets);
     } else {
-      const filterPlanets = backupPlanets
-        .filter((planet) => Number(planet[parametro]) === Number(valueFilter));
+      const filterPlanets = planets.filter(
+        (planet) => Number(planet[parametro]) === Number(valueFilter),
+      );
       setPlanets(filterPlanets);
     }
   };
