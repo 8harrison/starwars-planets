@@ -1,59 +1,11 @@
-import { useState, useEffect } from 'react';
+import { useContext, useState } from 'react';
+import AppContext from '../context/appContext';
+import Form from './Form';
 
 function Table() {
-  const [planets, setPlanets] = useState([]);
+  // const [planets, setPlanets] = useState([]);
+  const { planets, setPlanets, backupPlanets } = useContext(AppContext);
   const [pesquisa, setPesquisa] = useState();
-  const [backupPlanets, setBackupPlanets] = useState([]);
-  const [columFilter, setColumFilter] = useState('population');
-  const [comparisonFilter, setComparisonFilter] = useState('maior que');
-  const [valueFilter, setValueFilter] = useState(0);
-
-  const handleColumFilter = ({ target }) => {
-    setColumFilter(target.value);
-  };
-  const handleComparisonFilter = ({ target }) => {
-    setComparisonFilter(target.value);
-  };
-  const handleValueFilter = ({ target }) => {
-    setValueFilter(target.value);
-  };
-
-  const maiorOuMenorOuIgual = (parametro) => {
-    if (comparisonFilter === 'maior que') {
-      const filterPlanets = planets.filter(
-        (planet) => Number(planet[parametro]) > Number(valueFilter),
-      );
-      setPlanets(filterPlanets);
-      console.log(parametro);
-    } else if (comparisonFilter === 'menor que') {
-      const filterPlanets = planets.filter(
-        (planet) => planet[parametro] !== 'unknow'
-        && Number(planet[parametro]) < Number(valueFilter),
-      );
-      setPlanets(filterPlanets);
-    } else {
-      const filterPlanets = planets.filter(
-        (planet) => Number(planet[parametro]) === Number(valueFilter),
-      );
-      setPlanets(filterPlanets);
-    }
-  };
-  const onClick = () => {
-    if (columFilter === 'population') {
-      maiorOuMenorOuIgual('population');
-      const x = document.getElementById('colum-filter');
-      x.remove(x[0]);
-    } else if (columFilter === 'orbital_period') {
-      maiorOuMenorOuIgual('orbital_period');
-    } else if (columFilter === 'diameter') {
-      maiorOuMenorOuIgual('diameter');
-    } else if (columFilter === 'rotation_period') {
-      maiorOuMenorOuIgual('rotation_period');
-    } else if (columFilter === 'surface_water') {
-      maiorOuMenorOuIgual('surface_water');
-    }
-  };
-
   const handleChange = ({ target }) => {
     setPesquisa(target.value);
     console.log(target.value);
@@ -63,17 +15,6 @@ function Table() {
     setPlanets(filterPlanets);
     console.log(filterPlanets);
   };
-
-  useEffect(() => {
-    const fetchPlanets = async () => {
-      const url = 'https://swapi.dev/api/planets';
-      const response = await fetch(url);
-      const data = await response.json();
-      setPlanets(data.results);
-      setBackupPlanets(data.results);
-    };
-    fetchPlanets();
-  }, [setPesquisa]);
   return (
     <div>
       <input
@@ -82,36 +23,7 @@ function Table() {
         value={ pesquisa }
         data-testid="name-filter"
       />
-      <select
-        data-testid="column-filter"
-        id="colum-filter"
-        onChange={ handleColumFilter }
-        value={ columFilter }
-      >
-        <option value="population">population</option>
-        <option value="orbital_period">orbital_period</option>
-        <option value="diameter">diameter</option>
-        <option value="rotation_period">rotation_period</option>
-        <option value="surface_water">surface_water</option>
-      </select>
-      <select
-        data-testid="comparison-filter"
-        onChange={ handleComparisonFilter }
-        value={ comparisonFilter }
-      >
-        <option value="maior que">maior que</option>
-        <option value="menor que">menor que</option>
-        <option value="igual a">igual a</option>
-      </select>
-      <input
-        type="number"
-        data-testid="value-filter"
-        value={ valueFilter }
-        onChange={ handleValueFilter }
-      />
-      <button data-testid="button-filter" type="button" onClick={ onClick }>
-        adicionar filtro
-      </button>
+      <Form />
       <table>
         <tr>
           <th>climate</th>
